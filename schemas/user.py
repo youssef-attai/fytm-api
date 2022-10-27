@@ -2,12 +2,12 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
-    name: str
+    username: str
     password: str
 
 
 class ShowUser(BaseModel):
-    name: str
+    username: str
 
     class Config():
         orm_mode = True

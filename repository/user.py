@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 
 def create(request: user_schema.User, db: Session = Depends(get_db)):
     new_user = user_model.User(
-        name=request.name,
-        email=request.email,
+        username=request.username,
         password=Hash.bcrypt(request.password)
     )
     db.add(new_user)
