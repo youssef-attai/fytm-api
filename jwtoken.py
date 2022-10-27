@@ -18,7 +18,7 @@ def create_access_token(data: dict):
 def verify_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        name = payload.get("sub")
+        name: str = payload.get("sub")
         if name is None:
             raise credentials_exception
         token_data = token_schema.TokenData(name=name)
