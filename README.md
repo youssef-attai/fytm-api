@@ -14,12 +14,12 @@ they can add it to the app by providing the track's metadata
 and the YouTube video ID
 (i.e. the gibberish after **v=** in: https://www.youtube.com/watch?v=dQw4w9WgXcQ).
 
-The tracks are saved to the database so that everyone can find it next time
-they search for it.
+The added tracks are saved to the database, so that everyone can find them next time
+they search for them.
 
 Users can do the same with _artists_ and _albums_.
 
-They can also create an account to make their personal _playlists_.
+They can also create an account, to create their personal _playlists_.
 
 ## Try it out
 
