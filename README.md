@@ -21,7 +21,7 @@ Users can do the same with _artists_ and _albums_.
 
 They can also create an account, to create their personal _playlists_.
 
-## [Try it out](https://geaajs.deta.dev/docs)
+[![Try it out](./imgs/try-it-out-button.png)](https://geaajs.deta.dev/docs)
 
 **🚧 This API is still under development**
 
