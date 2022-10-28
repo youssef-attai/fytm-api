@@ -9,5 +9,5 @@ class User(BaseModel):
 class ShowUser(BaseModel):
     username: str
 
-    class Config():
+    class Config:
         orm_mode = True
