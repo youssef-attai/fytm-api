@@ -15,14 +15,20 @@ def create(request: user_schema.User, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return new_user
+
+    return user_schema.ShowUser(
+        username=new_user.username
+    )
 
 
 def get_by_id(uid: int, db: Session = Depends(get_db)):
-    user = db.query(user_model.User).filter(user_model.User.id == uid).first()
-    if not user:
+    the_user = db.query(user_model.User).filter(user_model.User.id == uid).first()
+    if the_user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with the id {uid} is not available"
+            detail=f"User with the id {uid} does not exist"
         )
-    return user
+
+    return user_schema.ShowUser(
+        username=the_user.username
+    )
