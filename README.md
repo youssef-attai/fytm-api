@@ -32,3 +32,5 @@ They can also create an account to make their personal _playlists_.
 - [x] Create an account.
 - [x] Add tracks to personal playlist.
 - [ ] Get direct link to track audio for streaming.
+- [ ] Add track cover, album cover, and artist picture.
+- [ ] Add categories to tracks.
