@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
 from database import get_db
 from hashing import Hash
-from schemas import user as user_schema
 from models import user as user_model
-from sqlalchemy.orm import Session
+from schemas import user as user_schema
 
 
 def create(request: user_schema.User, db: Session = Depends(get_db)):
@@ -17,11 +18,11 @@ def create(request: user_schema.User, db: Session = Depends(get_db)):
     return new_user
 
 
-def get_by_id(id: int, db: Session = Depends(get_db)):
-    user = db.query(user_model.User).filter(user_model.User.id == id).first()
+def get_by_id(uid: int, db: Session = Depends(get_db)):
+    user = db.query(user_model.User).filter(user_model.User.id == uid).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with the id {id} is not available"
+            detail=f"User with the id {uid} is not available"
         )
     return user
