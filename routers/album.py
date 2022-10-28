@@ -19,3 +19,13 @@ def create_album(
         # current_user_id: int = Depends(get_current_user)
 ):
     return album_repository.create(request, db)
+
+
+@router.get('/search', status_code=status.HTTP_200_OK)
+def search_albums_by_title(query: str = "", db: Session = Depends(get_db)):
+    return album_repository.search(query, db)
+
+
+@router.get('/by/{artist_id}', status_code=status.HTTP_200_OK)
+def get_albums_by_artist(artist_id: int, db: Session = Depends(get_db)):
+    return album_repository.by(artist_id, db)

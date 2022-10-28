@@ -1,5 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from pytube import YouTube
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -7,6 +8,24 @@ from models import album as album_model
 from models import artist as artist_model
 from models import track as track_model
 from schemas import track as track_schema
+
+
+def _join_track_artist_album(db):
+    return db.query(
+        track_model.Track, artist_model.Artist, album_model.Album
+    ).filter(
+        track_model.Track.artist == artist_model.Artist.id,
+        track_model.Track.album == album_model.Album.id
+    )
+
+
+def _show_track_from_joined_res(res):
+    return track_schema.ShowTrack(
+        track_id=res.Track.id,
+        title=res.Track.title,
+        artist=res.Artist.name,
+        album=res.Album.name
+    )
 
 
 def create(track: track_schema.Track, db: Session = Depends(get_db)):
@@ -53,3 +72,45 @@ def create(track: track_schema.Track, db: Session = Depends(get_db)):
         artist=the_artist.name,
         album=the_album.name
     )
+
+
+def search(
+        query: str,
+        db: Session = Depends(get_db),
+):
+    results = db.query(
+        track_model.Track, artist_model.Artist, album_model.Album
+    ).filter(
+        track_model.Track.artist == artist_model.Artist.id,
+        track_model.Track.album == album_model.Album.id
+    ).filter(
+        or_(
+            track_model.Track.title.ilike(f"%{query}%"),
+            artist_model.Artist.name.ilike(f"%{query}%"),
+            album_model.Album.name.ilike(f"%{query}%"),
+        )
+    ).all()
+
+    return [_show_track_from_joined_res(res) for res in results]
+
+
+def by(
+        artist_id: int,
+        db: Session = Depends(get_db)
+):
+    results = _join_track_artist_album(db).filter(
+        track_model.Track.artist == artist_id
+    ).all()
+
+    return [_show_track_from_joined_res(res) for res in results]
+
+
+def in_album(
+        album_id: int,
+        db: Session = Depends(get_db)
+):
+    results = _join_track_artist_album(db).filter(
+        track_model.Track.album == album_id
+    ).all()
+
+    return [_show_track_from_joined_res(res) for res in results]

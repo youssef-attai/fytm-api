@@ -26,3 +26,14 @@ def create(artist: artist_schema.Artist, db: Session = Depends(get_db)):
         artist_id=new_artist.id,
         name=new_artist.name
     )
+
+
+def search(
+        query: str,
+        db: Session = Depends(get_db),
+):
+    results = db.query(artist_model.Artist).filter(
+        artist_model.Artist.name.ilike(f"%{query}%")
+    ).all()
+
+    return results

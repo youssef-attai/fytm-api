@@ -19,3 +19,11 @@ def create_artist(
         # current_user_id: int = Depends(get_current_user)
 ):
     return artist_repository.create(request, db)
+
+
+@router.get('/search', status_code=status.HTTP_200_OK)
+def search_artists(
+        query: str = "",
+        db: Session = Depends(get_db),
+):
+    return artist_repository.search(query, db)

@@ -1,4 +1,5 @@
 from fastapi import Depends, HTTPException, status
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -27,3 +28,38 @@ def create(album: album_schema.Album, db: Session = Depends(get_db)):
         name=new_album.name,
         artist=the_artist.name
     )
+
+
+def search(
+        query: str,
+        db: Session = Depends(get_db)
+):
+    results = db.query(album_model.Album, artist_model.Artist).filter(
+        album_model.Album.artist == artist_model.Artist.id
+    ).filter(
+        album_model.Album.name.ilike(f"%{query}%")
+    ).all()
+
+    return [album_schema.ShowAlbum(
+        album_id=res.Album.id,
+        name=res.Album.name,
+        artist=res.Artist.name
+    ) for res in results]
+
+
+def by(
+        artist_id: int,
+        db: Session = Depends(get_db)
+):
+    results = db.query(album_model.Album, artist_model.Artist).filter(
+        and_(
+            album_model.Album.artist == artist_model.Artist.id,
+            album_model.Album.artist == artist_id
+        )
+    ).all()
+
+    return [album_schema.ShowAlbum(
+        album_id=res.Album.id,
+        name=res.Album.name,
+        artist=res.Artist.name
+    ) for res in results]
