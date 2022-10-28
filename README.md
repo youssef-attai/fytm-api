@@ -26,3 +26,9 @@ They can also create an account to make their personal _playlists_.
 [Free YouTube Music API](https://geaajs.deta.dev/docs)
 
 **🚧 This API is still under development**
+
+[] Add new tracks, artists, and albums.
+[] Search for tracks, artists, and albums.
+[] Create an account.
+[] Add tracks to personal playlist.
+[] Get direct link to track audio for streaming.
