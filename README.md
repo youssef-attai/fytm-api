@@ -12,7 +12,7 @@ could not find the track they are looking for,
 they can add it to the app by providing the track's metadata
 (e.g. the title, artist, album, etc.)
 and the YouTube video ID
-(i.e. the gibberish after **v=** in: https://www.youtube.com/watch?v=DyDfgMOUjCI).
+(i.e. the gibberish after **v=** in: https://www.youtube.com/watch?v=dQw4w9WgXcQ).
 
 The tracks are saved to the database so that everyone can find it next time
 they search for it.
