@@ -9,4 +9,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    name: Optional[str] = None
+    uid: Optional[int] = None
