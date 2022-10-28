@@ -21,5 +21,8 @@ Users can do the same with _artists_ and _albums_.
 
 They can also create an account to make their personal _playlists_.
 
+## Try it out
+
+[Free YouTube Music API](https://geaajs.deta.dev/docs)
 
 **🚧 This API is still under development**
