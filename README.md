@@ -1,0 +1,23 @@
+# Free YouTube Music
+
+This API allows you to stream music from YouTube for free.
+
+## How it works
+
+Users can search for their favorite _tracks_ and get links to
+audio files that can be used in media streaming, and if they 
+could not find the track they are looking for, 
+they can add it to the app by providing the track's metadata
+(e.g. the song title, artist, album, etc.)
+and the YouTube video ID
+(i.e. the gibberish after **v=** in: https://www.youtube.com/watch?v=DyDfgMOUjCI).
+
+The tracks are saved to the database so that everyone can find it next time
+they search for it.
+
+Users can do the same with _artists_ and _albums_.
+
+They can create an account to make their personal _playlists_.
+
+
+**🚧 This API is still under development**
