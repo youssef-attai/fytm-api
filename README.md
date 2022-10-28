@@ -27,8 +27,8 @@ They can also create an account to make their personal _playlists_.
 
 **🚧 This API is still under development**
 
-[] Add new tracks, artists, and albums.
-[] Search for tracks, artists, and albums.
-[] Create an account.
-[] Add tracks to personal playlist.
-[] Get direct link to track audio for streaming.
+[x] Add new tracks, artists, and albums.
+[x] Search for tracks, artists, and albums.
+[x] Create an account.
+[x] Add tracks to personal playlist.
+[ ] Get direct link to track audio for streaming.
