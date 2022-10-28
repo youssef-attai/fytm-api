@@ -4,6 +4,7 @@ from routers import auth as auth_router
 from routers import track as track_router
 from routers import artist as artist_router
 from routers import album as album_router
+from routers import playlist as playlist_router
 from database import engine, Base
 
 
@@ -17,3 +18,4 @@ app.include_router(user_router.router)
 app.include_router(track_router.router)
 app.include_router(artist_router.router)
 app.include_router(album_router.router)
+app.include_router(playlist_router.router)
