@@ -34,6 +34,6 @@ def get_tracks_by_artist(artist_id: int, db: Session = Depends(get_db)):
     return track_repository.by(artist_id, db)
 
 
-@router.get('/by/{album_id}', status_code=status.HTTP_200_OK)
+@router.get('/in/{album_id}', status_code=status.HTTP_200_OK)
 def get_tracks_in_album(album_id: int, db: Session = Depends(get_db)):
     return track_repository.in_album(album_id, db)
