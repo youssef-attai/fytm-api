@@ -7,3 +7,4 @@ python-jose
 python-multipart
 pydantic
 pytube
+python-dotenv
