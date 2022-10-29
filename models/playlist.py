@@ -9,4 +9,4 @@ class Playlist(Base):
     __tablename__ = 'playlists'
 
     user_id = Column(Integer, ForeignKey(models.user.User.id), primary_key=True, index=True)
-    track_id = Column(String, ForeignKey(models.track.Track.id), primary_key=True, index=True)
+    track_id = Column(String(50), ForeignKey(models.track.Track.id), primary_key=True, index=True)

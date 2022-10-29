@@ -8,5 +8,5 @@ class Album(Base):
     __tablename__ = 'albums'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    name = Column(String(100))
     artist = Column(Integer, ForeignKey(models.artist.Artist.id))

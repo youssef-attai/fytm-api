@@ -7,4 +7,4 @@ class Artist(Base):
     __tablename__ = 'artists'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    name = Column(String(100))
