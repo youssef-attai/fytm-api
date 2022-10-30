@@ -3,9 +3,9 @@ import urllib.request
 
 from deta import _Base
 from fastapi import FastAPI, Depends, HTTPException, status
-from pydantic import BaseModel
 from pytube import YouTube
-
+import schemas.track
+import schemas.user
 from database import get_users_db
 from hashing import Hash
 from oauth2 import get_current_user
@@ -14,22 +14,6 @@ from routers import auth as auth_router
 app = FastAPI()
 
 app.include_router(auth_router.router)
-
-
-class Track(BaseModel):
-    title: str
-    author: str
-    thumbnail_url: str
-
-
-class User(BaseModel):
-    username: str
-    password: str
-
-
-class ShowUser(BaseModel):
-    key: str
-    username: str
 
 
 def youtube_url(watch_id):
@@ -42,7 +26,7 @@ def create_track_from_watch_id(watch_id):
     author = yt.author
     thumbnail_url = yt.thumbnail_url
 
-    return Track(
+    return schemas.track.Track(
         title=title,
         author=author,
         thumbnail_url=thumbnail_url
@@ -50,7 +34,7 @@ def create_track_from_watch_id(watch_id):
 
 
 @app.post('/user')
-async def create_user(request: User, users_db: _Base = Depends(get_users_db)):
+async def create_user(request: schemas.user.User, users_db: _Base = Depends(get_users_db)):
     user_exists = users_db.fetch({
         'username': request.username
     }).items
@@ -72,7 +56,7 @@ async def create_user(request: User, users_db: _Base = Depends(get_users_db)):
         "password": Hash.bcrypt(request.password)
     })
 
-    return ShowUser(
+    return schemas.user.ShowUser(
         username=user['username'],
         key=user['key']
     )
