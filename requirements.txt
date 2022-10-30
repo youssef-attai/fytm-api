@@ -1,3 +1,10 @@
 fastapi
-deta
+uvicorn
+passlib
+bcrypt
+python-jose
+python-multipart
+pydantic
 pytube
+python-dotenv
+deta
