@@ -1,9 +1,12 @@
+import asyncio
 import re
 import urllib.request
 
 from deta import _Base
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from pytube import YouTube
+
 import schemas.track
 import schemas.user
 from database import get_users_db
@@ -12,6 +15,14 @@ from oauth2 import get_current_user
 from routers import auth as auth_router
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router.router)
 
@@ -27,6 +38,7 @@ def create_track_from_watch_id(watch_id):
     thumbnail_url = yt.thumbnail_url
 
     return schemas.track.Track(
+        watch_id=watch_id,
         title=title,
         author=author,
         thumbnail_url=thumbnail_url
@@ -64,14 +76,17 @@ async def create_user(request: schemas.user.User, users_db: _Base = Depends(get_
 
 @app.get('/search')
 async def search(q: str = ''):
+    q = '+'.join(q.split())
     html_page = urllib.request.urlopen(f'https://youtube.com/results?search_query={q}')
     videos_watch_ids = re.findall(r'watch\?v=(\S{11})', html_page.read().decode())
-    return videos_watch_ids
+    return await asyncio.gather(
+        *[asyncio.to_thread(lambda wa=w: create_track_from_watch_id(wa)) for w in set(videos_watch_ids)]
+    )
 
 
-@app.get('/track/{watch_id}')
-async def track(watch_id: str):
-    return create_track_from_watch_id(watch_id)
+# @app.get('/track/{watch_id}')
+# async def track(watch_id: str):
+#     return create_track_from_watch_id(watch_id)
 
 
 @app.get('/audio/{watch_id}')
