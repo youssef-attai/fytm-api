@@ -5,7 +5,7 @@ import urllib.request
 from deta import _Base
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from pytube import YouTube
+from yt_dlp import YoutubeDL
 
 import schemas.track
 import schemas.user
@@ -32,16 +32,23 @@ def youtube_url(watch_id):
 
 
 def create_track_from_watch_id(watch_id):
-    yt = YouTube(youtube_url(watch_id))
-    title = yt.title
-    author = yt.author
-    thumbnail_url = yt.thumbnail_url
+    ydl_opts = {
+        'format': 'm4a/bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'm4a',
+        }]
+    }
+
+    with YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(youtube_url(watch_id), download=False)
 
     return schemas.track.Track(
-        watch_id=watch_id,
-        title=title,
-        author=author,
-        thumbnail_url=thumbnail_url
+        watch_id=info["id"],
+        title=info["title"],
+        author=info["channel"],
+        thumbnail_url=info["thumbnail"],
+        audio_url=info["url"]
     )
 
 
@@ -78,7 +85,7 @@ async def create_user(request: schemas.user.User, users_db: _Base = Depends(get_
 async def search(q: str = ''):
     q = '+'.join(q.split())
     html_page = urllib.request.urlopen(f'https://youtube.com/results?search_query={q}')
-    videos_watch_ids = re.findall(r'watch\?v=(\S{11})', html_page.read().decode())
+    videos_watch_ids = re.findall(r'watch\?v=(\S{11})', html_page.read().decode())[:10]
     return await asyncio.gather(
         *[asyncio.to_thread(lambda wa=w: create_track_from_watch_id(wa)) for w in set(videos_watch_ids)]
     )
@@ -91,8 +98,9 @@ async def search(q: str = ''):
 
 @app.get('/audio/{watch_id}')
 async def audio(watch_id: str):
-    yt = YouTube(youtube_url(watch_id))
-    return yt.streams.get_audio_only().url
+    return f'audio for {watch_id}'
+    # yt = YouTube(youtube_url(watch_id))
+    # return yt.streams.get_audio_only().url
 
 
 @app.get('/whoami')
