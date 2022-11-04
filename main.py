@@ -1,21 +1,18 @@
 from fastapi import FastAPI
-from routers import user as user_router
-from routers import auth as auth_router
-from routers import track as track_router
-from routers import artist as artist_router
-from routers import album as album_router
-from routers import playlist as playlist_router
-from database import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
+from routers import accounts as auth_router
+from routers import track as track_router
 
 app = FastAPI()
 
-
-Base.metadata.create_all(engine)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router.router)
-app.include_router(user_router.router)
 app.include_router(track_router.router)
-app.include_router(artist_router.router)
-app.include_router(album_router.router)
-app.include_router(playlist_router.router)

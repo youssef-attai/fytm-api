@@ -1,15 +1,12 @@
 from pydantic import BaseModel
 
+from pydantic.dataclasses import dataclass
 
+
+@dataclass(eq=True, frozen=True)
 class Track(BaseModel):
-    youtube: str
+    watch_id: str
     title: str
-    artist: int
-    album: int
-
-
-class ShowTrack(BaseModel):
-    track_id: str
-    title: str
-    artist: str
-    album: str
+    author: str
+    thumbnail_url: str
+    audio_url: str
