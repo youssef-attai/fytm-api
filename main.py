@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers import accounts as auth_router
 from routers import track as track_router
+from routers import favorites as favorites_router
 
 app = FastAPI()
 
@@ -16,3 +17,4 @@ app.add_middleware(
 
 app.include_router(auth_router.router)
 app.include_router(track_router.router)
+app.include_router(favorites_router.router)
