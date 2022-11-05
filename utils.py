@@ -26,3 +26,21 @@ def create_track_from_watch_id(watch_id):
         thumbnail_url=info["thumbnail"],
         audio_url=info["url"]
     )
+
+
+def cache_track(watch_id, track_cache_db):
+    track_from_yt = create_track_from_watch_id(watch_id).dict(exclude={"__pydantic_initialised__"})
+    track_cache_db.insert({
+        **track_from_yt
+    })
+    return track_from_yt
+
+
+def assert_current_user(current_username, users_db):
+    user = users_db.fetch({
+        'username': current_username
+    }).items
+
+    if len(user) == 0:
+        return None
+    return user[0]
