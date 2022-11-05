@@ -10,3 +10,7 @@ class Track(BaseModel):
     author: str
     thumbnail_url: str
     audio_url: str
+
+
+class TrackWatchID(BaseModel):
+    watch_id: str
