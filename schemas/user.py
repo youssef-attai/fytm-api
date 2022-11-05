@@ -7,5 +7,4 @@ class User(BaseModel):
 
 
 class ShowUser(BaseModel):
-    key: str
     username: str
