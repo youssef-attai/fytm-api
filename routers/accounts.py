@@ -52,10 +52,11 @@ async def signup(request: schemas.user.User, users_db: _Base = Depends(get_users
 
     user = users_db.insert({
         "username": request.username,
-        "password": Hash.bcrypt(request.password)
+        "password": Hash.bcrypt(request.password),
+        "favs": [],
+        "queues": dict()
     })
 
     return schemas.user.ShowUser(
-        username=user['username'],
-        key=user['key']
+        username=user['username']
     )
